@@ -17,3 +17,4 @@ $routes->post('editor/loadImage', 'EditorController::loadImage');
 $routes->get('pdf', 'PdfController::index');
 $routes->get('pdf-gerar', 'PdfController::pdf_gerar');
 $routes->get('pdf-gerar-imagem', 'PdfController::pdf_gerar_imagem');
+$routes->get('pdf-gerar-css-externo', 'PdfController::pdf_gerar_css_externo');
