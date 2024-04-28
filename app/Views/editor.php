@@ -8,30 +8,30 @@
     <link rel="stylesheet" href="<?php echo base_url('trumbowyg/dist/ui/trumbowyg.min.css') ?> ">
     <link rel="stylesheet" href="<?php echo base_url('trumbowyg/dist/plugins/emoji/ui/trumbowyg.emoji.min.css') ?>">
     <style>
-        .container-rel {
+        .relatorio-container {
             max-width: 2400px;
             margin: 20px auto 10px auto;
             padding: 10px;
         }
 
-        h1,
-        h2 {
+        .relatorio-text1,
+        .relatorio-text2 {
             font-size: 24px;
             text-align: center;
             margin-bottom: 20px;
 
         }
 
-        h2 {
+        .relatorio-text2 {
             border: 1px solid #ccc;
         }
 
-        h1 {
+        .relatorio-text1 {
             color: red;
             letter-spacing: .2rem;
         }
 
-        table {
+        .relatorio-tabela {
             width: 100%;
             border-collapse: collapse;
         }
@@ -54,39 +54,39 @@
     <form action="<?= site_url('editor/saveContent') ?>" method="post">
         <label>Título:</label><br>
         <input type="text" name="titulo"><br><br>
-        <div name="conteudo" id="conteudo" rows="5">
+        <div class="relatorio-container" name="conteudo" id="conteudo" rows="5">
             <div id="editor">
-                <div class="container-rel non-editable">
-                    <h1 contenteditable="false">RESERVADO</h1>
-                    <h2 contenteditable="false">Relatório de Inteligência Nº 065/2019 – ASINT – PMCE</h2>
-                    <table>
+                <div class="non-editable">
+                    <h1 class="relatorio-text1" contenteditable="false">RELATÓRIO</h1>
+                    <h2 class="relatorio-text2" contenteditable="false">Relatório</h2>
+                    <table class="relatorio-tabela">
                         <tr>
-                            <th contenteditable="false">DATA</th>
-                            <td contenteditable="false"><?php echo mb_strtoupper(data()); ?></td>
+                            <th class="relatorio-cabecalho" contenteditable="false">DATA</th>
+                            <td class="relatorio-data" contenteditable="false"><?php echo mb_strtoupper(data()); ?></td>
                         </tr>
                         <tr>
-                            <th contenteditable="false">ASSUNTO</th>
-                            <td>ASSUNTO...</td>
+                            <th class="relatorio-cabecalho"  contenteditable="false">ASSUNTO</th>
+                            <td class="relatorio-data">ASSUNTO...</td>
                         </tr>
                         <tr>
-                            <th contenteditable="false">ORIGEM</th>
-                            <td>ORIGEM...</td>
+                            <th class="relatorio-cabecalho" contenteditable="false">ORIGEM</th>
+                            <td class="relatorio-data">ORIGEM...</td>
                         </tr>
                         <tr>
-                            <th contenteditable="false">DIFUSÃO</th>
-                            <td>DIFUSÃO</td>
+                            <th class="relatorio-cabecalho" contenteditable="false">DIFUSÃO</th>
+                            <td class="relatorio-data">DIFUSÃO</td>
                         </tr>
                         <tr>
-                            <th contenteditable="false">DIF. ANT.</th>
-                            <td>*.*.*.</td>
+                            <th class="relatorio-cabecalho" contenteditable="false">DIF. ANT.</th>
+                            <td class="relatorio-data">*.*.*.</td>
                         </tr>
                         <tr>
-                            <th contenteditable="false">REF</th>
-                            <td>*.*.*.</td>
+                            <th class="relatorio-cabecalho" contenteditable="false">REF</th>
+                            <td class="relatorio-data">*.*.*.</td>
                         </tr>
                         <tr>
-                            <th contenteditable="false">ANEXO(S)</th>
-                            <td>*.*.*.</td>
+                            <th class="relatorio-cabecalho" contenteditable="false">ANEXO(S)</th>
+                            <td class="relatorio-data">*.*.*.</td>
                         </tr>
                     </table>
                 </div>
