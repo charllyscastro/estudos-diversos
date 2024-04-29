@@ -12,6 +12,9 @@
         <a href="<?php echo site_url('pdf-gerar')?>">Gerar pdf</a><br><br>
         <a href="<?php echo site_url('pdf-gerar-imagem')?>">Gerar pdf imagem</a><br><br>
         <a href="<?php echo site_url('pdf-gerar-css-externo')?>">Gerar pdf css externo</a><br><br>
+        <a href="<?php echo site_url('pdf-gerar-relatorio-bd')?>">Gerar pdf relatório bd</a><br><br>
+        
+
     </div>
 </body>
 </html>
