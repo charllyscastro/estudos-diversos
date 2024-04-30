@@ -6,12 +6,16 @@ use App\Controllers\BaseController;
 use App\Models\EditorModel;
 use App\Models\UsuarioModel;
 use Dompdf\Dompdf;
+use Smalot\PdfParser\Parser;
 
 class PdfController extends BaseController
 {
     public function index()
     {
-        return view('Pdf/index');
+        $data = [
+            'validation_erros' => session('validation_erros')
+        ];
+        return view('Pdf/index', $data);
     }
 
     // Exemplo para geração de pdf
@@ -225,6 +229,49 @@ class PdfController extends BaseController
         $dompdf->stream();
     }
 
+    public function pdf_ler()
+    {
+        $arquivo = $this->request->getFile('arquivo');
+
+        if($arquivo->getMimeType() != 'application/pdf'){
+            return redirect()->back()->with('validation_erros', ['error' => 'O arquivo deve ser do tipo pdf']);
+        }else{
+            $renomear_arquivo = md5(time()) . '.pdf';
+            $caminho_upload = ROOTPATH . 'public/';
+
+            if(move_uploaded_file($arquivo->getTempName(), $caminho_upload . $renomear_arquivo)){
+              $text =  $this->lerPDF($caminho_upload . $renomear_arquivo);
+
+              $data = [
+                'textopdf' => $text
+              ];
+
+              return view('Pdf/lerpdf', $data);
+            }else{
+                return redirect()->back()->with('validation_erros', ['error' => 'Não foi possivel mover o arquivo']);
+            }
+        }
+    }
+
+    private function lerPDF($caminho_arquivo){
+        // echo "ler o pdf: " . $caminho_arquivo;
+
+        $arquivo = "";
+
+        $parser = new Parser();
+
+        $pdf = $parser->parseFile($caminho_arquivo);
+
+        $pages = $pdf->getPages();
+
+        foreach($pages as $page){
+            //nl2br - Insere quebras de linha HTML antes de todas as quebras de linha em uma string
+            $arquivo .= nl2br($page->getText());
+        }
+ 
+        return $arquivo;
+
+    }
 
 
 

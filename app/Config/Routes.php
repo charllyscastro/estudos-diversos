@@ -22,3 +22,6 @@ $routes->get('pdf-gerar-relatorio-bd', 'PdfController::pdf_gerar_relatorio_bd');
 
 $routes->post('pdf-gerar-relatorio-filtro-bd', 'PdfController::pdf_gerar_relatorio_filtro_bd');
 
+$routes->post('pdf-ler', 'PdfController::pdf_ler');
+
+

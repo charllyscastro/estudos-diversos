@@ -22,8 +22,20 @@
             <input type="submit" value="Pesquisar"><br><br>
         </form>
         <br>
-        <br>
-        
+
+        <hr>
+        <h3>Ler texto pdf</h3>
+        <form action="pdf-ler" method="POST" enctype="multipart/form-data">
+            <input type="file" name="arquivo" accept="application/pdf"><br><br>
+            <input type="submit" name="btn-enviar-pdf" value="Enviar"><br><br>
+        </form>
+
+        <hr>
+        <?php 
+            if(session('validation_erros')){
+                echo "<p style='color: red;'>". $validation_erros['error']. "</p>"; 
+            }
+        ?>
 
     </div>
 </body>
