@@ -268,7 +268,6 @@ class PdfController extends BaseController
             //nl2br - Insere quebras de linha HTML antes de todas as quebras de linha em uma string
             $arquivo .= nl2br($page->getText());
         }
-
  
         return $arquivo;
 
