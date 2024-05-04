@@ -24,4 +24,6 @@ $routes->post('pdf-gerar-relatorio-filtro-bd', 'PdfController::pdf_gerar_relator
 
 $routes->post('pdf-ler', 'PdfController::pdf_ler');
 
+//Leafletjs
 
+$routes->get('leaflet', 'LeafletController::index');
