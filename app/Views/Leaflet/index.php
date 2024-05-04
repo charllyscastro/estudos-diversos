@@ -7,15 +7,17 @@
     <title>Leaflet</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
     <style>
-        body{
+        body {
             margin: 0;
             padding: 0;
         }
-        .titulo{
+
+        .titulo {
             width: 100%;
             height: 25px;
             text-align: center;
         }
+
         #map {
             width: 100%;
             height: 90vh;
@@ -24,7 +26,9 @@
 </head>
 
 <body>
-    <div class="titulo"><h3>Leaflet</h3></div>
+    <div class="titulo">
+        <h3>Leaflet</h3>
+    </div>
     <div id="map"></div>
 </body>
 
@@ -38,6 +42,42 @@
     var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
     });
+    // osm.addTo(map);
 
-    osm.addTo(map);
+    var dark = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+        subdomains: 'abcd',
+        maxZoom: 20
+    });
+
+    // dark.addTo(map);
+
+
+    /**
+    Hybrid: s,h;
+    Satellite: s;
+    Streets: m;
+    Terrain: p;
+     */
+
+    var googleStreets = L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    });
+
+    // googleStreets.addTo(map);
+
+    var googleHybrid = L.tileLayer('http://{s}.google.com/vt?lyrs=s,h&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    });
+
+    // googleHybrid.addTo(map);
+
+    var googleTerrain = L.tileLayer('http://{s}.google.com/vt?lyrs=p&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    });
+
+    googleTerrain.addTo(map);
 </script>
