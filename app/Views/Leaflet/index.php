@@ -92,7 +92,22 @@
     var popup = singleMarker.bindPopup('Aqui é o Ceará <br>' + singleMarker.getLatLng()).openPopup();
     popup.addTo(map);
 
-    console.log(singleMarker.toGeoJSON().geometry.coordinates);
-    console.log('lat: ' + singleMarker.toGeoJSON().geometry.coordinates[1]);
-    console.log('lng: ' + singleMarker.toGeoJSON().geometry.coordinates[0]);
+    // console.log(singleMarker.toGeoJSON().geometry.coordinates);
+    // console.log('lat: ' + singleMarker.toGeoJSON().geometry.coordinates[1]);
+    // console.log('lng: ' + singleMarker.toGeoJSON().geometry.coordinates[0]);
+
+    /** Layer controller */
+    var baseMaps ={
+        "osm": osm,
+        "dark": dark,
+        "googleHybrid": googleHybrid,
+        "googleStreet": googleStreets,
+        "googleTerrain": googleTerrain
+    }
+
+    var overlayMaps = {
+        "Marker": singleMarker
+    }
+
+    L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
 </script>
