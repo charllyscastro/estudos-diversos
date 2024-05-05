@@ -60,13 +60,6 @@
     Terrain: p;
      */
 
-    var googleStreets = L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}', {
-        maxZoom: 20,
-        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
-    });
-
-    // googleStreets.addTo(map);
-
     var googleHybrid = L.tileLayer('http://{s}.google.com/vt?lyrs=s,h&x={x}&y={y}&z={z}', {
         maxZoom: 20,
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
@@ -79,5 +72,27 @@
         subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
     });
 
-    googleTerrain.addTo(map);
+    // googleTerrain.addTo(map);
+
+    var googleStreets = L.tileLayer('http://{s}.google.com/vt?lyrs=m&x={x}&y={y}&z={z}', {
+        maxZoom: 20,
+        subdomains: ['mt0', 'mt1', 'mt2', 'mt3']
+    });
+
+    googleStreets.addTo(map);
+
+    /** Marker */
+    var myIcon = L.icon({
+        iconUrl: '<?php echo site_url('img/caveira.png') ?>',
+        iconSize: [40,40]
+    });
+
+    var draggable = {draggable: true}; // Deixa o elemento arrastável;
+    var singleMarker = L.marker([-3.758190, -38.542984], {icon: myIcon});
+    var popup = singleMarker.bindPopup('Aqui é o Ceará <br>' + singleMarker.getLatLng()).openPopup();
+    popup.addTo(map);
+
+    console.log(singleMarker.toGeoJSON().geometry.coordinates);
+    console.log('lat: ' + singleMarker.toGeoJSON().geometry.coordinates[1]);
+    console.log('lng: ' + singleMarker.toGeoJSON().geometry.coordinates[0]);
 </script>
