@@ -22,6 +22,11 @@
             width: 100%;
             height: 90vh;
         }
+
+        /* retira o icone do canto inferior direito */
+        .leaflet-control-attribution {
+            display: none !important;
+        }
     </style>
 </head>
 
@@ -35,6 +40,12 @@
 </html>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="<?php echo site_url('geojson/point.js') ?>"></script>
+<script src="<?php echo site_url('geojson/bpm1.js') ?>"></script>
+<script src="<?php echo site_url('geojson/bpm3.js') ?>"></script>
+<script src="<?php echo site_url('geojson/bpm5.js') ?>"></script>
+
+
 <script>
     // Map initialize
     var map = L.map('map').setView([-3.758190, -38.542984], 12);
@@ -84,11 +95,15 @@
     /** Marker */
     var myIcon = L.icon({
         iconUrl: '<?php echo site_url('img/caveira.png') ?>',
-        iconSize: [40,40]
+        iconSize: [40, 40]
     });
 
-    var draggable = {draggable: true}; // Deixa o elemento arrastável;
-    var singleMarker = L.marker([-3.758190, -38.542984], {icon: myIcon});
+    var draggable = {
+        draggable: true
+    }; // Deixa o elemento arrastável;
+    var singleMarker = L.marker([-3.758190, -38.542984], {
+        icon: myIcon
+    });
     var popup = singleMarker.bindPopup('Aqui é o Ceará <br>' + singleMarker.getLatLng()).openPopup();
     popup.addTo(map);
 
@@ -96,8 +111,73 @@
     // console.log('lat: ' + singleMarker.toGeoJSON().geometry.coordinates[1]);
     // console.log('lng: ' + singleMarker.toGeoJSON().geometry.coordinates[0]);
 
+
+    /**Geojson */
+    // Se quiser apresentar todos os dados de uma vez, os dados tem que vir no formato
+    /**
+     * var pointJson = {
+        "type": "FeatureCollection",
+        "features": [
+            {
+                "type": "Feature",
+                "properties": {},
+                "geometry": {
+                    "coordinates": [
+                        -38.587820958793856,
+                        -3.712248634258927
+                    ],
+                    "type": "Point"
+                }
+            },
+        }
+        */
+    // L.geoJson(pointJson).addTo(map);
+
+    // POINT - Fazendo o map para cada item do json, ao vir os dados do model pode apresentar dessa forma
+    pointJson['features'].map((feature) => {
+        var singleMarker = L.marker([feature['geometry']['coordinates'][1], feature['geometry']['coordinates'][0]], {
+            icon: myIcon
+        });
+        var popup = singleMarker.bindPopup('Aqui é o Ceará <br>' + singleMarker.getLatLng()).openPopup();
+        popup.addTo(map);
+    });
+
+    // L.geoJSON(bpm1).addTo(map);
+    // L.geoJSON(bpm3, {
+    //     onEachFeature: function(feature, layer) {
+    //         layer.bindPopup(feature.properties.bpm)
+    //         layer.on('mouseover', function(e) {
+    //             this.openPopup();
+    //         });
+    //         layer.on('mouseout', function(e) {
+    //             this.closePopup();
+    //         })
+    //     }
+    // }).addTo(map);
+   var pointData =  L.geoJSON(bpm5, {
+        onEachFeature: function(feature, layer) {
+            layer.bindPopup(feature.properties.bpm);
+            layer.on('mouseover', function(e) {
+                this.openPopup(e.latlng);
+
+            });
+            layer.on('mousemove', function(e) {
+                this.openPopup(e.latlng);
+
+            });
+            layer.on('mouseout', function(e) {
+                this.closePopup();
+            });
+        },
+        style: {
+            fillColor: bpm5.features[0].properties.color,
+            fillOpacity: 0.2,
+            color: bpm5.features[0].properties.color,
+        }
+    }).addTo(map);
+
     /** Layer controller */
-    var baseMaps ={
+    var baseMaps = {
         "osm": osm,
         "dark": dark,
         "googleHybrid": googleHybrid,
@@ -106,8 +186,11 @@
     }
 
     var overlayMaps = {
-        "Marker": singleMarker
+        "Marker": singleMarker,
+        "Point Data": pointData
     }
 
-    L.control.layers(baseMaps, overlayMaps, {collapsed: false}).addTo(map);
+    L.control.layers(baseMaps, overlayMaps, {
+        collapsed: false
+    }).addTo(map);
 </script>
