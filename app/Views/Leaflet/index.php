@@ -54,6 +54,8 @@
 <script src="<?php echo site_url('geojson/bpm5.js') ?>"></script>
 
 
+
+
 <script>
     /*************************
      *      Map initialize    *
@@ -180,17 +182,26 @@
     // }).addTo(map);
     var pointData = L.geoJSON(bpm5, {
         onEachFeature: function(feature, layer) {
-            layer.bindPopup(feature.properties.bpm);
-            layer.on('mouseover', function(e) {
-                this.openPopup(e.latlng);
+            
+            // layer.bindPopup(feature.properties.bpm);
+            // layer.on('mouseover', function(e) {
+            //     this.openPopup(e.latlng);
 
-            });
-            layer.on('mousemove', function(e) {
-                this.openPopup(e.latlng);
+            // });
+            // layer.on('mousemove', function(e) {
+            //     this.openPopup(e.latlng);
 
-            });
-            layer.on('mouseout', function(e) {
-                this.closePopup();
+            // });
+            // layer.on('mouseout', function(e) {
+            //     this.closePopup();
+            // });
+
+
+            // Adicione uma legenda ao marcador
+            layer.bindTooltip(feature.properties.bpm, {
+                permanent: true,
+                direction: 'center',
+                className: 'feature-label'
             });
         },
         style: {
@@ -260,7 +271,7 @@
 
     /**Adicionando apenas um marcador e excluindo o anterior */
     var marker;
-
+   
     map.on('click', function(e) {
         // Remove o marcador anterior, se existir
         if (marker) {
@@ -272,8 +283,9 @@
             icon: myIcon
         }).addTo(map);
 
-        var popup = marker.bindPopup('<a href="#" onclick="excluir()">Excluir</a>').openPopup();
+        var popup = marker.bindPopup('<a href="#" onclick="excluir()">Excluir</a>');
         popup.addTo(map);
+        console.log('lat: ' + e.latlng.lat, 'long: ' + e.latlng.lng)
     });
 
     function excluir() {
