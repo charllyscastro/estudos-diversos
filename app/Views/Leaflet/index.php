@@ -27,6 +27,12 @@
         .leaflet-control-attribution {
             display: none !important;
         }
+
+        .coordinate {
+            position: absolute;
+            bottom: 10px;
+            right: 2%;
+        }
     </style>
 </head>
 
@@ -34,7 +40,9 @@
     <div class="titulo">
         <h3>Leaflet</h3>
     </div>
-    <div id="map"></div>
+    <div id="map">
+        <div class="leaflet-control coordinate"></div>
+    </div>
 </body>
 
 </html>
@@ -47,7 +55,9 @@
 
 
 <script>
-    // Map initialize
+    /*************************
+     *      Map initialize    *
+     **************************/
     var map = L.map('map').setView([-3.758190, -38.542984], 12);
 
     var osm = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -99,7 +109,11 @@
         attribution: "Weather data © 2012 IEM Nexrad"
     });
 
-    /** Marker */
+
+    /*************************
+     *      Marker            *
+     **************************/
+
     var myIcon = L.icon({
         iconUrl: '<?php echo site_url('img/caveira.png') ?>',
         iconSize: [40, 40]
@@ -119,7 +133,10 @@
     // console.log('lng: ' + singleMarker.toGeoJSON().geometry.coordinates[0]);
 
 
-    /**Geojson */
+
+    /*************************
+     *      Geojson           *
+     **************************/
     // Se quiser apresentar todos os dados de uma vez, os dados tem que vir no formato
     /**
      * var pointJson = {
@@ -183,14 +200,18 @@
         }
     }).addTo(map);
 
-    /** Layer controller */
+
+    /*************************
+     *   Layer controller     *
+     **************************/
+
     var baseMaps = {
         "osm": osm,
         "dark": dark,
         "googleHybrid": googleHybrid,
         "googleStreet": googleStreets,
         "googleTerrain": googleTerrain,
-        
+
     }
 
     var overlayMaps = {
@@ -202,4 +223,63 @@
     L.control.layers(baseMaps, overlayMaps, {
         collapsed: false
     }).addTo(map);
+
+
+    /*************************
+     *   Leftlet Events        *
+     **************************/
+    // map.on('mouseover', function() {
+    //     console.log('Your mouse is over the map');
+    // });
+
+    // map.on('mousemove', function(e) {
+    //     document.getElementsByClassName('coordinate')[0].innerHTML = 'lat: ' + e.latlng.lat + ' / lng: ' + e.latlng.lng;
+    //     console.log('lat: ' + e.latlng.lat, 'lng: ' + e.latlng.lng)
+    // });
+
+    //Adiciona vários marcadores e exclui cada um individual
+    // var markers = {};
+    // map.on('click', function(e) {
+    //     var id = Date.now();
+    //     var singleMarker = L.marker([e.latlng.lat, e.latlng.lng], {
+    //         icon: myIcon
+    //     });
+    //     singleMarker.id = id;
+    //     markers[id] = singleMarker;
+    //     var popup = singleMarker.bindPopup('<a href="#" onClick="excluir('+id+')">Excluir</a>').openPopup();
+    //     popup.addTo(map);
+
+    // })
+
+    // function excluir(id) {
+    //     var marker = markers[id];
+    //     // console.log(link.parentNode._source);
+    //     map.removeLayer(marker);
+    //     delete markers[id];
+    // }
+
+    /**Adicionando apenas um marcador e excluindo o anterior */
+    var marker;
+
+    map.on('click', function(e) {
+        // Remove o marcador anterior, se existir
+        if (marker) {
+            map.removeLayer(marker);
+        }
+
+        // Cria um novo marcador
+        marker = L.marker([e.latlng.lat, e.latlng.lng], {
+            icon: myIcon
+        }).addTo(map);
+
+        var popup = marker.bindPopup('<a href="#" onclick="excluir()">Excluir</a>').openPopup();
+        popup.addTo(map);
+    });
+
+    function excluir() {
+        // Remove o marcador atual
+        map.removeLayer(marker);
+        // Define marker como nulo para indicar que não há nenhum marcador no mapa
+        marker = null;
+    }
 </script>
