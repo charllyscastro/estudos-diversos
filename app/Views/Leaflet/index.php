@@ -92,6 +92,13 @@
 
     googleStreets.addTo(map);
 
+    var nexrad = L.tileLayer.wms("http://mesonet.agron.iastate.edu/cgi-bin/wms/nexrad/n0r.cgi", {
+        layers: 'nexrad-n0r-900913',
+        format: 'image/png',
+        transparent: true,
+        attribution: "Weather data © 2012 IEM Nexrad"
+    });
+
     /** Marker */
     var myIcon = L.icon({
         iconUrl: '<?php echo site_url('img/caveira.png') ?>',
@@ -154,7 +161,7 @@
     //         })
     //     }
     // }).addTo(map);
-   var pointData =  L.geoJSON(bpm5, {
+    var pointData = L.geoJSON(bpm5, {
         onEachFeature: function(feature, layer) {
             layer.bindPopup(feature.properties.bpm);
             layer.on('mouseover', function(e) {
@@ -182,12 +189,14 @@
         "dark": dark,
         "googleHybrid": googleHybrid,
         "googleStreet": googleStreets,
-        "googleTerrain": googleTerrain
+        "googleTerrain": googleTerrain,
+        
     }
 
     var overlayMaps = {
         "Marker": singleMarker,
-        "Point Data": pointData
+        "Point Data": pointData,
+        "nexrad": nexrad
     }
 
     L.control.layers(baseMaps, overlayMaps, {
