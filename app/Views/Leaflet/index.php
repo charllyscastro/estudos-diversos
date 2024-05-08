@@ -33,6 +33,17 @@
             bottom: 10px;
             right: 2%;
         }
+        
+        /* Mudar a cor do popup */
+        .leaflet-popup-content-wrapper, .leaflet-popup-tip{
+            background-color: #000;
+            color: #fff;
+            border: 2px solid red;
+        }
+
+        .leaflet-popup-close-button span{
+            color: #fff;
+        }
     </style>
 </head>
 
@@ -248,7 +259,8 @@
     //     console.log('lat: ' + e.latlng.lat, 'lng: ' + e.latlng.lng)
     // });
 
-    //Adiciona vários marcadores e exclui cada um individual
+    /** Adiciona vários marcadores e exclui cada um individual*/ 
+
     // var markers = {};
     // map.on('click', function(e) {
     //     var id = Date.now();
@@ -270,28 +282,33 @@
     // }
 
     /**Adicionando apenas um marcador e excluindo o anterior */
-    var marker;
+
+    // var marker;
    
-    map.on('click', function(e) {
-        // Remove o marcador anterior, se existir
-        if (marker) {
-            map.removeLayer(marker);
-        }
+    // map.on('click', function(e) {
+    //     // Remove o marcador anterior, se existir
+    //     if (marker) {
+    //         map.removeLayer(marker);
+    //     }
 
-        // Cria um novo marcador
-        marker = L.marker([e.latlng.lat, e.latlng.lng], {
-            icon: myIcon
-        }).addTo(map);
+    //     // Cria um novo marcador
+    //     marker = L.marker([e.latlng.lat, e.latlng.lng], {
+    //         icon: myIcon
+    //     }).addTo(map);
 
-        var popup = marker.bindPopup('<a href="#" onclick="excluir()">Excluir</a>');
-        popup.addTo(map);
-        console.log('lat: ' + e.latlng.lat, 'long: ' + e.latlng.lng)
-    });
+    //     var popup = marker.bindPopup('<a href="#" style="text-decoration: none" onclick="excluir()">Excluir</a>');
+    //     popup.addTo(map);
+    //     console.log('lat: ' + e.latlng.lat, 'long: ' + e.latlng.lng)
+    // });
 
-    function excluir() {
-        // Remove o marcador atual
-        map.removeLayer(marker);
-        // Define marker como nulo para indicar que não há nenhum marcador no mapa
-        marker = null;
-    }
+    // function excluir() {
+    //     // Remove o marcador atual
+    //     map.removeLayer(marker);
+    //     // Define marker como nulo para indicar que não há nenhum marcador no mapa
+    //     marker = null;
+    // }
+
+    /*************************
+     *   Styling custom      *
+     *************************/
 </script>
