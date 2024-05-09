@@ -317,6 +317,7 @@
     if(!navigator.geolocation){
         console.log("Your browser doesn't support geolocation feature!")
     }else{
+        // Intervalo de 5 seg
         setInterval(() => {
             navigator.geolocation.getCurrentPosition(getPosition);
         }, 5000);
@@ -327,8 +328,9 @@
         // console.log(position);
         var lat = position.coords.latitude;
         var long = position.coords.longitude;
-        var accuracy = position.coords.accuracy;
+        var accuracy = position.coords.accuracy; //Precisao
 
+        //Necessario para não haver sobreposicao
         if(marker){
             map.removeLayer(marker);
         }
@@ -338,7 +340,7 @@
         }
 
         marker = L.marker([lat, long]);
-        circle = L.circle([lat, long], {radius: accuracy});
+        circle = L.circle([lat, long], {radius: accuracy}); //Adiciona um circulo de acordo com a presicao
 
         var featureGroup = L.featureGroup([marker, circle]).addTo(map);
 
