@@ -123,9 +123,9 @@
     });
 
 
-    /*************************
-     *      Marker            *
-     **************************/
+    /**********************
+     *       Marker       *
+     **********************/
 
     var myIcon = L.icon({
         iconUrl: '<?php echo site_url('img/caveira.png') ?>',
@@ -191,6 +191,8 @@
     //         })
     //     }
     // }).addTo(map);
+
+    
     var pointData = L.geoJSON(bpm5, {
         onEachFeature: function(feature, layer) {
             
@@ -308,7 +310,40 @@
     //     marker = null;
     // }
 
-    /*************************
-     *   Styling custom      *
-     *************************/
+    /******************************
+     *  Rastreador de localização *
+     ******************************/
+    // Atenção!!! só funciona se https estiver ativado
+    if(!navigator.geolocation){
+        console.log("Your browser doesn't support geolocation feature!")
+    }else{
+        setInterval(() => {
+            navigator.geolocation.getCurrentPosition(getPosition);
+        }, 5000);
+    }
+
+    var marker, circle;
+    function getPosition(position){
+        // console.log(position);
+        var lat = position.coords.latitude;
+        var long = position.coords.longitude;
+        var accuracy = position.coords.accuracy;
+
+        if(marker){
+            map.removeLayer(marker);
+        }
+
+        if(circle){
+            map.removeLayer(circle);
+        }
+
+        marker = L.marker([lat, long]);
+        circle = L.circle([lat, long], {radius: accuracy});
+
+        var featureGroup = L.featureGroup([marker, circle]).addTo(map);
+
+        map.fitBounds(featureGroup.getBounds());
+
+        console.log("Your coordinate is lat: " + lat + " long: " + long + " Accuracy: " + accuracy);
+    }
 </script>
