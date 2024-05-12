@@ -363,42 +363,44 @@
      *         Roteamento         *
      ******************************/
     // marker icon
-    var carIcon = L.icon({
-        iconUrl: '<?php echo site_url('img/vtr.png') ?>',
-        iconSize: [30, 30]
-    });
+    // var carIcon = L.icon({
+    //     iconUrl: '<?php //echo site_url('img/vtr.png') 
+                        ?>',
+    //     iconSize: [30, 30]
+    // });
 
-    //marker
-    var marker = L.marker([-3.758190, -38.542984], {
-        icon: carIcon
-    }).addTo(map);
-
-    //map click event
-    map.on('click', function(e) {
-
-        var secondMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
-        L.Routing.control({
-                waypoints: [
-                    L.latLng(-3.758190, -38.542984),
-                    L.latLng(e.latlng.lat, e.latlng.lng)
-                ]
-            })
-            .on('routesfound', function(e) {
-                e.routes[0].coordinates.forEach(function(coord, index) {
-                    setTimeout(() => {
-                        marker.setLatLng([coord.lat, coord.lng]);
-                    }, 100 * index);
-                });
-            })
-            .addTo(map);
-
-    })
-
-    //cdn biblioteca leaflet-routing-machine
-    // L.Routing.control({
-    //     waypoints: [
-    //         L.latLng(-3.704112, -38.579094),
-    //         L.latLng(-3.724122, -38.511133)
-    //     ]
+    // //marker
+    // var marker = L.marker([-3.758190, -38.542984], {
+    //     icon: carIcon
     // }).addTo(map);
+
+    // //map click event
+    // map.on('click', function(e) {
+
+    //     var secondMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+    //     L.Routing.control({
+    //         waypoints: [
+    //             L.latLng(-3.758190, -38.542984),
+    //             L.latLng(e.latlng.lat, e.latlng.lng)
+    //         ]
+    //     }).on('routesfound', function(e) {
+    //         e.routes[0].coordinates.forEach(function(coord, index) {
+    //             setTimeout(() => {
+    //                 marker.setLatLng([coord.lat, coord.lng]);
+    //             }, 100 * index);
+    //         });
+    //     }).addTo(map);
+    // });
+
+    /******************************
+     *      Imagem Pop-up         *
+     ******************************/
+    var marker = L.marker([-3.758190, -38.542984], {
+        draggable: true, //arrastavel
+        title: "Texto hover do ponto", //Texto apresentado hover mouse
+        opacity: 0.5, // Opacidade
+    })
+    .addTo(map)
+    .bindPopup('<h1> Marker </h1> <p> This is the marker text </p> <img width="300px" src="<?php echo site_url('img/aurora.jpg')?>" />') //adiciona popup
+    .openPopup(); // Abre o popup por padrao
 </script>
