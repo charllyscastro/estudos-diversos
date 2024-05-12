@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Leaflet</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+
+    <!-- leaflet routing machine css -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
     <style>
         body {
             margin: 0;
@@ -33,15 +36,16 @@
             bottom: 10px;
             right: 2%;
         }
-        
+
         /* Mudar a cor do popup */
-        .leaflet-popup-content-wrapper, .leaflet-popup-tip{
+        .leaflet-popup-content-wrapper,
+        .leaflet-popup-tip {
             background-color: #000;
             color: #fff;
             border: 2px solid red;
         }
 
-        .leaflet-popup-close-button span{
+        .leaflet-popup-close-button span {
             color: #fff;
         }
     </style>
@@ -59,6 +63,10 @@
 </html>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+
+<!-- leaflet routing machine js -->
+<script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
 <script src="<?php echo site_url('geojson/point.js') ?>"></script>
 <script src="<?php echo site_url('geojson/bpm1.js') ?>"></script>
 <script src="<?php echo site_url('geojson/bpm3.js') ?>"></script>
@@ -127,19 +135,20 @@
      *       Marker       *
      **********************/
 
-    var myIcon = L.icon({
-        iconUrl: '<?php echo site_url('img/caveira.png') ?>',
-        iconSize: [40, 40]
-    });
+    // var myIcon = L.icon({
+    //     iconUrl: '<?php //echo site_url('img/caveira.png') 
+                        ?>',
+    //     iconSize: [40, 40]
+    // });
 
-    var draggable = {
-        draggable: true
-    }; // Deixa o elemento arrastável;
-    var singleMarker = L.marker([-3.758190, -38.542984], {
-        icon: myIcon
-    });
-    var popup = singleMarker.bindPopup('Aqui é o Ceará <br>' + singleMarker.getLatLng()).openPopup();
-    popup.addTo(map);
+    // var draggable = {
+    //     draggable: true
+    // }; // Deixa o elemento arrastável;
+    // var singleMarker = L.marker([-3.758190, -38.542984], {
+    //     icon: myIcon
+    // });
+    // var popup = singleMarker.bindPopup('Aqui é o Ceará <br>' + singleMarker.getLatLng()).openPopup();
+    // popup.addTo(map);
 
     // console.log(singleMarker.toGeoJSON().geometry.coordinates);
     // console.log('lat: ' + singleMarker.toGeoJSON().geometry.coordinates[1]);
@@ -171,13 +180,13 @@
     // L.geoJson(pointJson).addTo(map);
 
     // POINT - Fazendo o map para cada item do json, ao vir os dados do model pode apresentar dessa forma
-    pointJson['features'].map((feature) => {
-        var singleMarker = L.marker([feature['geometry']['coordinates'][1], feature['geometry']['coordinates'][0]], {
-            icon: myIcon
-        });
-        var popup = singleMarker.bindPopup('Aqui é o Ceará <br>' + singleMarker.getLatLng()).openPopup();
-        popup.addTo(map);
-    });
+    // pointJson['features'].map((feature) => {
+    //     var singleMarker = L.marker([feature['geometry']['coordinates'][1], feature['geometry']['coordinates'][0]], {
+    //         icon: myIcon
+    //     });
+    //     var popup = singleMarker.bindPopup('Aqui é o Ceará <br>' + singleMarker.getLatLng()).openPopup();
+    //     popup.addTo(map);
+    // });
 
     // L.geoJSON(bpm1).addTo(map);
     // L.geoJSON(bpm3, {
@@ -192,37 +201,37 @@
     //     }
     // }).addTo(map);
 
-    
-    var pointData = L.geoJSON(bpm5, {
-        onEachFeature: function(feature, layer) {
-            
-            // layer.bindPopup(feature.properties.bpm);
-            // layer.on('mouseover', function(e) {
-            //     this.openPopup(e.latlng);
 
-            // });
-            // layer.on('mousemove', function(e) {
-            //     this.openPopup(e.latlng);
+    // var pointData = L.geoJSON(bpm5, {
+    //     onEachFeature: function(feature, layer) {
 
-            // });
-            // layer.on('mouseout', function(e) {
-            //     this.closePopup();
-            // });
+    //         // layer.bindPopup(feature.properties.bpm);
+    //         // layer.on('mouseover', function(e) {
+    //         //     this.openPopup(e.latlng);
+
+    //         // });
+    //         // layer.on('mousemove', function(e) {
+    //         //     this.openPopup(e.latlng);
+
+    //         // });
+    //         // layer.on('mouseout', function(e) {
+    //         //     this.closePopup();
+    //         // });
 
 
-            // Adicione uma legenda ao marcador
-            layer.bindTooltip(feature.properties.bpm, {
-                permanent: true,
-                direction: 'center',
-                className: 'feature-label'
-            });
-        },
-        style: {
-            fillColor: bpm5.features[0].properties.color,
-            fillOpacity: 0.2,
-            color: bpm5.features[0].properties.color,
-        }
-    }).addTo(map);
+    //         // Adicione uma legenda ao marcador
+    //         layer.bindTooltip(feature.properties.bpm, {
+    //             permanent: true,
+    //             direction: 'center',
+    //             className: 'feature-label'
+    //         });
+    //     },
+    //     style: {
+    //         fillColor: bpm5.features[0].properties.color,
+    //         fillOpacity: 0.2,
+    //         color: bpm5.features[0].properties.color,
+    //     }
+    // }).addTo(map);
 
 
     /*************************
@@ -239,8 +248,8 @@
     }
 
     var overlayMaps = {
-        "Marker": singleMarker,
-        "Point Data": pointData,
+        // "Marker": singleMarker,
+        // "Point Data": pointData,
         "nexrad": nexrad
     }
 
@@ -261,7 +270,7 @@
     //     console.log('lat: ' + e.latlng.lat, 'lng: ' + e.latlng.lng)
     // });
 
-    /** Adiciona vários marcadores e exclui cada um individual*/ 
+    /** Adiciona vários marcadores e exclui cada um individual*/
 
     // var markers = {};
     // map.on('click', function(e) {
@@ -286,7 +295,7 @@
     /**Adicionando apenas um marcador e excluindo o anterior */
 
     // var marker;
-   
+
     // map.on('click', function(e) {
     //     // Remove o marcador anterior, se existir
     //     if (marker) {
@@ -314,38 +323,82 @@
      *  Rastreador de localização *
      ******************************/
     // Atenção!!! só funciona se https estiver ativado
-    if(!navigator.geolocation){
-        console.log("Your browser doesn't support geolocation feature!")
-    }else{
-        // Intervalo de 5 seg
-        setInterval(() => {
-            navigator.geolocation.getCurrentPosition(getPosition);
-        }, 5000);
-    }
+    // if(!navigator.geolocation){
+    //     console.log("Your browser doesn't support geolocation feature!")
+    // }else{
+    //     // Intervalo de 5 seg
+    //     setInterval(() => {
+    //         navigator.geolocation.getCurrentPosition(getPosition);
+    //     }, 5000);
+    // }
 
-    var marker, circle;
-    function getPosition(position){
-        // console.log(position);
-        var lat = position.coords.latitude;
-        var long = position.coords.longitude;
-        var accuracy = position.coords.accuracy; //Precisao
+    // var marker, circle;
 
-        //Necessario para não haver sobreposicao
-        if(marker){
-            map.removeLayer(marker);
-        }
+    // function getPosition(position){
+    //     // console.log(position);
+    //     var lat = position.coords.latitude;
+    //     var long = position.coords.longitude;
+    //     var accuracy = position.coords.accuracy; //Precisao
 
-        if(circle){
-            map.removeLayer(circle);
-        }
+    //     //Necessario para não haver sobreposicao
+    //     if(marker){
+    //         map.removeLayer(marker);
+    //     }
 
-        marker = L.marker([lat, long]);
-        circle = L.circle([lat, long], {radius: accuracy}); //Adiciona um circulo de acordo com a presicao
+    //     if(circle){
+    //         map.removeLayer(circle);
+    //     }
 
-        var featureGroup = L.featureGroup([marker, circle]).addTo(map);
+    //     marker = L.marker([lat, long]);
+    //     circle = L.circle([lat, long], {radius: accuracy}); //Adiciona um circulo de acordo com a presicao
 
-        map.fitBounds(featureGroup.getBounds());
+    //     var featureGroup = L.featureGroup([marker, circle]).addTo(map);
 
-        console.log("Your coordinate is lat: " + lat + " long: " + long + " Accuracy: " + accuracy);
-    }
+    //     map.fitBounds(featureGroup.getBounds());
+
+    //     console.log("Your coordinate is lat: " + lat + " long: " + long + " Accuracy: " + accuracy);
+    // }
+
+    /******************************
+     *         Roteamento         *
+     ******************************/
+    // marker icon
+    var carIcon = L.icon({
+        iconUrl: '<?php echo site_url('img/vtr.png') ?>',
+        iconSize: [30, 30]
+    });
+
+    //marker
+    var marker = L.marker([-3.758190, -38.542984], {
+        icon: carIcon
+    }).addTo(map);
+
+    //map click event
+    map.on('click', function(e) {
+
+        var secondMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
+        L.Routing.control({
+                waypoints: [
+                    L.latLng(-3.758190, -38.542984),
+                    L.latLng(e.latlng.lat, e.latlng.lng)
+                ]
+            })
+            .on('routesfound', function(e) {
+                e.routes[0].coordinates.forEach(function(coord, index) {
+                    setTimeout(() => {
+                        marker.setLatLng([coord.lat, coord.lng]);
+                    }, 100 * index);
+                });
+            })
+            .addTo(map);
+
+    })
+
+    //cdn biblioteca leaflet-routing-machine
+    // L.Routing.control({
+    //     waypoints: [
+    //         L.latLng(-3.704112, -38.579094),
+    //         L.latLng(-3.724122, -38.511133)
+    //     ]
+    // }).addTo(map);
 </script>
