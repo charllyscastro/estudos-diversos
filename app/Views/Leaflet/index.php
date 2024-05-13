@@ -9,6 +9,10 @@
 
     <!-- leaflet routing machine css -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+
+    <!-- leaflet control geocoder css -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+
     <style>
         body {
             margin: 0;
@@ -66,6 +70,9 @@
 
 <!-- leaflet routing machine js -->
 <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+<!-- leaflet geocoder control js -->
+<script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
 <script src="<?php echo site_url('geojson/point.js') ?>"></script>
 <script src="<?php echo site_url('geojson/bpm1.js') ?>"></script>
@@ -395,12 +402,44 @@
     /******************************
      *      Imagem Pop-up         *
      ******************************/
-    var marker = L.marker([-3.758190, -38.542984], {
-        draggable: true, //arrastavel
-        title: "Texto hover do ponto", //Texto apresentado hover mouse
-        opacity: 0.5, // Opacidade
+    // var marker = L.marker([-3.758190, -38.542984], {
+    //     draggable: true, //arrastavel
+    //     title: "Texto hover do ponto", //Texto apresentado hover mouse
+    //     opacity: 0.5, // Opacidade
+    // })
+    // .addTo(map)
+    // .bindPopup('<h1> Marker </h1> <p> This is the marker text </p> <img width="300px" src="<?php echo site_url('img/aurora.jpg') ?>" />') //adiciona popup
+    // .openPopup(); // Abre o popup por padrao
+
+    /*************************
+     *   Pesquisar lugares   *
+     *************************/
+    L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+    L.Control.geocoder()
+    // Adiciona um retangulo pelas coordenadas norte, sul, leste, oeste
+    // .on('markgeocode', function(e) {
+    //     console.log(e);
+    //     var bbox = e.geocode.bbox;
+    //     var poly = L.polygon([
+    //         bbox.getSouthEast(),
+    //         bbox.getNorthEast(),
+    //         bbox.getNorthWest(),
+    //         bbox.getSouthWest()
+    //     ]).addTo(map);
+    //     map.fitBounds(poly.getBounds());
+    // })
+
+    //Adiciona um circulo no meio do ponto
+    .on('markgeocode', function(e) {
+        console.log(e);
+        var center = e.geocode.center;
+        var circle = L.circle([center.lat, center.lng]).addTo(map);
+        map.fitBounds(circle.getBounds());
     })
-    .addTo(map)
-    .bindPopup('<h1> Marker </h1> <p> This is the marker text </p> <img width="300px" src="<?php echo site_url('img/aurora.jpg')?>" />') //adiciona popup
-    .openPopup(); // Abre o popup por padrao
+    .addTo(map);
+
 </script>
+
+<!-- circle = L.circle([lat, long], {radius: accuracy}); //Adiciona um circulo de acordo com a presicao -->
