@@ -27,3 +27,6 @@ $routes->post('pdf-ler', 'PdfController::pdf_ler');
 //Leafletjs
 
 $routes->get('leaflet', 'LeafletController::index');
+
+
+$routes->get('visjs', 'VisController::index');
