@@ -100,6 +100,7 @@
 
   var options = {
     manipulation: {
+      initiallyActive: true,
       enabled: true,
       addNode: false,
       addEdge: false,
@@ -107,7 +108,8 @@
 
     },
     interaction: {
-      tooltipDelay: 300
+      tooltipDelay: 300,
+      navigationButtons: true,
     }
   };
 
