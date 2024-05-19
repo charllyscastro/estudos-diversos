@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Controllers\BaseController;
 use App\Models\PessoaModel;
+use App\Models\PessoaVeiculoModel;
 use App\Models\PessoaVinculoModel;
 use App\Models\VinculoModel;
 use CodeIgniter\Config\Factories;
@@ -15,12 +16,14 @@ class VisController extends BaseController
     private $pessoaModel;
     private $vinculoModel;
     private $pessoaVinculoModel;
+    private $pessoaVeiculoModel;
 
     public function __construct()
     {
         $this->pessoaModel = Factories::models(PessoaModel::class);
         $this->vinculoModel = Factories::models(VinculoModel::class);
         $this->pessoaVinculoModel = Factories::models(PessoaVinculoModel::class);
+        $this->pessoaVeiculoModel = Factories::models(PessoaVeiculoModel::class);
     }
     public function index()
     {
@@ -38,14 +41,20 @@ class VisController extends BaseController
 
             foreach ($vinculos as $vinculo) {
                 $vinculo->vinculo = $this->pessoaModel
-                ->select('pessoas.nome as pessoa_vinculo_nome')
+                ->select('pessoas.nome as pessoa_vinculo_nome, pessoas.imagem as pessoa_imagem')
                 ->find($vinculo->pessoa_vinculo_id);
             };
-            
+
+        $veiculos = $this->pessoaVeiculoModel->where('pessoa_id', 1)->findAll();
+
+        
         $data = [
             'vinculos' => $vinculos,
-            'pessoa' => $pessoa
+            'pessoa' => $pessoa,
+            'veiculos' => $veiculos
         ];
+        
+        // dd($data);
         return view('Vis/index.php', $data);
     }
 }
