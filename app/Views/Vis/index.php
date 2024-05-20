@@ -21,15 +21,15 @@
 
   #mynetwork {
     position: relative;
-    width: 800px;
-    height: 600px;
+    width: 90%;
+    height: 90vh;
     border: 1px solid lightgray;
   }
-  .vis-tooltip{
+
+  .vis-tooltip {
     max-width: 250px;
     white-space: normal !important;
   }
-
 </style>
 
 <body>
@@ -39,19 +39,22 @@
   <div id="mynetwork"></div>
 
   <script type="text/javascript" src="https://unpkg.com/vis-network/dist/vis-network.min.js"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 </body>
 
 </html>
 
 <script type="text/javascript">
-
   // create a network
-  var nodes = new vis.DataSet([{
+
+  var nodes = [];
+  var edges = [];
+  nodes = new vis.DataSet([{
       id: <?php echo $pessoa->id ?>,
       label: "<?php echo $pessoa->nome ?>",
       image: "<?php echo site_url('img/user/' . $pessoa->imagem) ?>",
       shape: "circularImage",
-      title: "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+      title: "<?php echo $pessoa->nome ?>"
     },
     <?php foreach ($vinculos as $vinculo) : ?> {
         id: <?php echo $vinculo->pessoa_vinculo_id  ?>,
@@ -73,12 +76,12 @@
   ]);
 
   // create an array with edges
-  var edges = new vis.DataSet([
+  edges = new vis.DataSet([
     <?php foreach ($vinculos as $vinculo) : ?> {
         from: <?php echo $vinculo->pessoa_id ?>,
         to: <?php echo $vinculo->pessoa_vinculo_id ?>,
         label: "<?php echo $vinculo->vinculo_nome ?>",
-       
+
       },
     <?php endforeach; ?>
 
@@ -114,4 +117,57 @@
   };
 
   var network = new vis.Network(container, data, options);
+
+  network.on("doubleClick", function(params) {
+    // console.log(params.nodes[0]);
+    $.ajax({
+      url: "<?php echo site_url('visjs-get'); ?>",
+      type: "GET",
+      dataType: "json",
+      data: {
+        pessoa_id: params.nodes[0]
+      },
+      success: function(response) {
+
+        if (response.vinculos) {
+          response.vinculos.forEach(el => {
+            if (!nodes.get(el.pessoa_vinculo_id)) {
+            nodes.add({
+              id: el.pessoa_vinculo_id,
+              label: el.vinculo.pessoa_vinculo_nome,
+              image: el.vinculo.pessoa_imagem ? "<?php echo site_url("img/user/") ?>" + el.vinculo.pessoa_imagem : "<?php echo site_url('img/user/sem_imagem.png') ?>",
+              shape: "circularImage",
+              title: el.vinculo.pessoa_vinculo_nome
+            })
+          }
+
+            edges.add({
+              from: el.pessoa_id,
+              to: el.pessoa_vinculo_id,
+              label: el.vinculo_nome,
+            });
+          });
+
+
+
+
+        }
+        // edges = [...edges, ]
+      },
+      error: function(xhr, status, error) {
+        console.error(xhr.responseText);
+        // Trate o erro conforme necessário
+      }
+    });
+    // params.event = "[original event]";
+    // document.getElementById("eventSpanHeading").innerText = "Click event:";
+    // document.getElementById("eventSpanContent").innerText = JSON.stringify(
+    //   params,
+    //   null,
+    //   4
+    // );
+    // console.log(
+    //   "click event, getNodeAt returns: " + this.getNodeAt(params.pointer.DOM)
+    // );
+  });
 </script>

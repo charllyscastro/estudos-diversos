@@ -8,8 +8,7 @@ use App\Models\PessoaVeiculoModel;
 use App\Models\PessoaVinculoModel;
 use App\Models\VinculoModel;
 use CodeIgniter\Config\Factories;
-use CodeIgniter\Database\Query;
-use CodeIgniter\HTTP\ResponseInterface;
+
 
 class VisController extends BaseController
 {
@@ -28,8 +27,23 @@ class VisController extends BaseController
     public function index()
     {
 
-        $pessoa = $this->pessoaModel->where('id', 1)->first();
+       $data = $this->busca_vinculos(1);
+        
+        // dd($data);
+        return view('Vis/index.php', $data);
+    }
 
+    public function recupera_vinculos(){
+        $pessoa_id = $this->request->getGet('pessoa_id');
+
+        $data = $this->busca_vinculos($pessoa_id);
+
+        return $this->response->setJSON($data);
+    }
+
+    private function busca_vinculos($pessoa_id){
+
+        $pessoa = $this->pessoaModel->where('id', $pessoa_id)->first();
 
         $selected = 'pessoas.nome as pessoa_nome, vinculos.nome as vinculo_nome, pessoas_vinculos.*';
 
@@ -37,7 +51,7 @@ class VisController extends BaseController
             ->select($selected)
             ->join('pessoas', 'pessoas.id = pessoas_vinculos.pessoa_id')
             ->join('vinculos', 'vinculos.id = pessoas_vinculos.vinculo_id')
-            ->where('pessoas_vinculos.pessoa_id', 1)->findAll();
+            ->where('pessoas_vinculos.pessoa_id', $pessoa_id)->findAll();
 
             foreach ($vinculos as $vinculo) {
                 $vinculo->vinculo = $this->pessoaModel
@@ -45,7 +59,7 @@ class VisController extends BaseController
                 ->find($vinculo->pessoa_vinculo_id);
             };
 
-        $veiculos = $this->pessoaVeiculoModel->where('pessoa_id', 1)->findAll();
+        $veiculos = $this->pessoaVeiculoModel->where('pessoa_id', $pessoa_id)->findAll();
 
         
         $data = [
@@ -53,8 +67,7 @@ class VisController extends BaseController
             'pessoa' => $pessoa,
             'veiculos' => $veiculos
         ];
-        
-        // dd($data);
-        return view('Vis/index.php', $data);
+
+        return $data;
     }
 }

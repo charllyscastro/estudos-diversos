@@ -29,4 +29,5 @@ $routes->post('pdf-ler', 'PdfController::pdf_ler');
 $routes->get('leaflet', 'LeafletController::index');
 
 
-$routes->get('visjs', 'VisController::index');
+$routes->get('visjs',     'VisController::index');
+$routes->get('visjs-get', 'VisController::recupera_vinculos');
